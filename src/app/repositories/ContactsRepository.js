@@ -37,6 +37,31 @@ class ContactsRepository {
       resolve();
     });
   }
+
+  create({
+    name, email, phone, category_id,
+  }) {
+    return new Promise((resolve) => {
+      const newContact = {
+        id: v4(),
+        name,
+        phone,
+        email,
+        category_id,
+      };
+
+      contacts.push(newContact);
+
+      resolve(newContact);
+    });
+  }
+
+  findByEmail(email) {
+    // eslint-disable-next-line no-promise-executor-return
+    return new Promise((resolve) => resolve(
+      contacts.find((contact) => contact.email === email),
+    ));
+  }
 }
 
 module.exports = new ContactsRepository();
