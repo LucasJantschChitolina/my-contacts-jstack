@@ -40,8 +40,33 @@ class ContactController {
     return response.json(contact);
   }
 
-  update() {
+  async update(request, response) {
+    const { id } = request.params;
+    const {
+      name, email, phone, category_id,
+    } = request.body;
 
+    const contactExists = await ContactsRepository.findById(id);
+
+    if (!contactExists) {
+      return response.status(404).json({ error: 'User not found' });
+    }
+
+    if (!name || !email || !phone || !category_id) {
+      return response.status(400).json({ error: 'Missing data for user' });
+    }
+
+    const emailExists = await ContactsRepository.findByEmail(contactExists);
+
+    if (emailExists && emailExists.id !== id) {
+      return response.status(400).json({ error: 'Contact already exists. This email is already in use' });
+    }
+
+    const contact = await ContactsRepository.update(id, {
+      name, email, phone, category_id,
+    });
+
+    response.json(contact);
   }
 
   async delete(request, response) {
@@ -59,5 +84,4 @@ class ContactController {
   }
 }
 
-// singleton
 module.exports = new ContactController();
