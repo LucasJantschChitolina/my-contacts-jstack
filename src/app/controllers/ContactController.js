@@ -23,7 +23,7 @@ class ContactController {
       name, email, phone, category_id,
     } = request.body;
 
-    if (!name || !email || !phone || !category_id) {
+    if (!name || !email || !phone) {
       return response.status(400).json({ error: 'Missing data for user' });
     }
 
