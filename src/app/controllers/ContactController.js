@@ -53,7 +53,7 @@ class ContactController {
       return response.status(404).json({ error: 'User not found' });
     }
 
-    if (!name || !email || !phone || !category_id) {
+    if (!name || !email || !phone) {
       return response.status(400).json({ error: 'Missing data for user' });
     }
 
